@@ -230,21 +230,22 @@ angularAPP.factory('consumerFactory', function ($rootScope, $http, $log, $q, $fi
       $log.debug(topicName, "DETECTING TYPE.. HAVE CONSUMED THIS TOPIC BEFORE, IT'S IN COOKIE. TYPE IS [" + a[topicName] + "]");
       return a[topicName];
     } else {
-      $log.debug(topicName, "DETECTING TYPE.. DON'T KNOW THE TYPE I WILL TRY WITH [ AVRO ] FIRST");
-      return 'avro';
+      $log.debug(topicName, "DETECTING TYPE.. DON'T KNOW THE TYPE I WILL TRY WITH [ BINARY ] FIRST");
+      return 'binary';
     }
   }
 
   function getConsumerTypeRetry(previousFormatTried, topicName) {
     switch (previousFormatTried) {
-      case 'avro':
-        $log.debug(topicName, "DETECTING TYPE.. FAILED WITH AVRO, WILL TRY [ JSON ]");
-        return 'json';
-        break;
-      case 'json':
-        $log.debug(topicName, "DETECTING TYPE.. FAILED WITH JSON, WILL TRY [ BINARY ]");
-        return 'binary';
-        break;
+      // We want to try directly with binary type because we don't use avro yet and have keys as strings => uncompatible with json format
+      // case 'avro':
+      //   $log.debug(topicName, "DETECTING TYPE.. FAILED WITH AVRO, WILL TRY [ JSON ]");
+      //   return 'json';
+      //   break;
+      // case 'json':
+      //   $log.debug(topicName, "DETECTING TYPE.. FAILED WITH JSON, WILL TRY [ BINARY ]");
+      //   return 'binary';
+      //   break;
       default:
         $log.debug(topicName, "DETECTING TYPE.. FAILED WITH AVRO & JSON, WILL TRY [ BINARY ]");
         return 'binary';
